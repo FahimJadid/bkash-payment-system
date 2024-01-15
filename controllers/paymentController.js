@@ -1,10 +1,11 @@
 const asyncHandler = require("express-async-handler");
 
-const paymentCreate = asyncHandler(async (req, res) => {
+const createPayment = asyncHandler(async (req, res) => {
   try {
+    console.log(req.body);
   } catch (error) {
     throw new Error(error);
   }
 });
 
-module.exports = { paymentCreate };
+module.exports = { createPayment };

@@ -1,8 +1,9 @@
 const express = require("express");
-const { paymentCreate } = require("../controllers/paymentController");
+const { createPayment } = require("../controllers/paymentController");
+const { bkashAuth } = require("../middlewares/bkashMiddleware");
 
 const router = express.Router();
 
-router.post("/bkash/create", paymentCreate);
+router.post("/bkash/create", bkashAuth, createPayment);
 
 module.exports = router;

@@ -21,7 +21,7 @@ const Home = () => {
     <>
       <h1>Bkash Payment System</h1>
       <div className="card">
-        <button>Pay with Bkash</button>
+        <button onClick={handlePayment}>Pay with Bkash</button>
       </div>
     </>
   );
