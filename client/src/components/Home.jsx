@@ -10,10 +10,11 @@ const Home = () => {
           orderId: 1,
         }
       );
+      window.location.href = data.bkashURL;
 
-      console.log(data);
+      // console.log(data);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
     }
   };
 
