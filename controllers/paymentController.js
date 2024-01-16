@@ -65,7 +65,7 @@ const paymentCallback = asyncHandler(async (req, res) => {
         await Payment.create({
           userID: uuidv4().substring(0, 5),
           paymentID,
-          amount: data.amount,
+          amount: parseInt(data.amount),
           trxID: data.trxID,
           date: data.paymentExecuteTime,
         });
@@ -83,4 +83,40 @@ const paymentCallback = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createPayment, paymentCallback };
+const paymentRefund = asyncHandler(async (req, res) => {
+  const { trxID } = req.params;
+  try {
+    const payment = await Payment.findOne({ trxID });
+    if (!payment) {
+      return res.status(400).json({ message: "Payment not found" });
+    }
+    const { data } = await axios.post(
+      process.env.bkash_refund_transaction_url,
+      {
+        paymentID: payment.paymentID,
+        amount: payment.amount,
+        trxID,
+        sku: "payment refund",
+        reason: "Faulty Product",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: globals.get("id_token"),
+          "X-APP-Key": process.env.BKASH_APP_KEY,
+        },
+      }
+    );
+
+    if (data && data.statusCode === "0000") {
+      return res.status(200).json({ message: "Refund Successful" });
+    } else {
+      return res.status(400).json({ message: "Refund Failed" });
+    }
+  } catch (error) {
+    return res.status(400).json({ message: "Refund Failed" });
+  }
+});
+
+module.exports = { createPayment, paymentCallback, paymentRefund };
