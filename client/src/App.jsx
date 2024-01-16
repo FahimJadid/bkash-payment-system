@@ -10,7 +10,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/error?" element={<Error />} />
+          <Route path="/error/:message" element={<Error />} />
           <Route path="/success" element={<Success />} />
         </Routes>
       </Router>
