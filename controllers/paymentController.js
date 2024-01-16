@@ -11,7 +11,8 @@ const createPayment = asyncHandler(async (req, res) => {
       {
         mode: "0011",
         payerReference: " ",
-        callbackURL: `${process.env.backend_callback_url}}`,
+        // callbackURL: `${process.env.backend_callback_url}}`,
+        callbackURL: `http://localhost:5000/api/v1/payment/bkash/callback`,
         amount: amount ? amount : "1",
         currency: "BDT",
         intent: "sale",
@@ -30,14 +31,21 @@ const createPayment = asyncHandler(async (req, res) => {
     // console.log(data);
     return res.status(200).json({ bkashURL: data.bkashURL });
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error({ error: error.message });
   }
 });
 
 const paymentCallback = asyncHandler(async (req, res) => {
+  const { paymentID, status } = req.query;
+
+  // console.log(req.query);
+
   try {
+    if (status === "cancel" || status === "failure") {
+      return res.redirect(`http://localhost:5173/error?message=${status}`);
+    }
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error({ error: error.message });
   }
 });
 

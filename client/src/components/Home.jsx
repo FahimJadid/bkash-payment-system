@@ -8,11 +8,12 @@ const Home = () => {
         {
           amount: 10,
           orderId: 1,
+        },
+        {
+          withCredentials: true,
         }
       );
       window.location.href = data.bkashURL;
-
-      // console.log(data);
     } catch (error) {
       console.log(error.response.data);
     }
