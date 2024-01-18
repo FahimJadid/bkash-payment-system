@@ -6,7 +6,7 @@ const globals = require("node-global-storage");
 const { v4: uuidv4 } = require("uuid");
 
 const createPayment = asyncHandler(async (req, res) => {
-  const { amount, userID } = req.body;
+  const { amount } = req.body;
   try {
     const { data } = await axios.post(
       process.env.bkash_create_payment_url,
